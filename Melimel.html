@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melimel - Vivir con gusto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FFC107 0%, #FFD54F 50%, #FFECB3 100%);
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Flores de fondo */
+        .flower {
+            position: fixed;
+            font-size: 40px;
+            z-index: 1;
+            animation: sway 3s ease-in-out infinite;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        /* Abejas animadas con alas */
+        .bee-container {
+            position: fixed;
+            z-index: 2;
+            animation: flyPath 20s infinite linear;
+        }
+
+        .bee-body {
+            display: inline-block;
+            font-size: 28px;
+            position: relative;
+            animation: bounce 0.5s ease-in-out infinite;
+        }
+
+        .bee-wings {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2px;
+        }
+
+        .wing {
+            width: 12px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50% 50% 50% 0;
+            animation: flapWings 0.1s ease-in-out infinite;
+        }
+
+        .wing.left {
+            transform-origin: bottom right;
+            animation-delay: 0.05s;
+        }
+
+        .wing.right {
+            transform-origin: bottom left;
+            transform: scaleX(-1);
+        }
+
+        @keyframes flapWings {
+            0%, 100% { transform: rotate(-20deg); }
+            50% { transform: rotate(20deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes flyPath {
+            0% { left: -100px; top: 10%; }
+            15% { left: 20%; top: 20%; }
+            30% { left: 40%; top: 15%; }
+            45% { left: 60%; top: 25%; }
+            60% { left: 80%; top: 18%; }
+            75% { left: 90%; top: 22%; }
+            100% { left: 110%; top: 10%; }
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(to bottom, #FFC700);
+            padding: 0;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            position: relative;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 101;
+        }
+
+        /* AQUÍ VA TU LOGO - Reemplaza el src con la ruta de tu imagen */
+        .logo {
+            width: 190px;
+            height: 140px;
+            background: transparent;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* box-shadow: 0 4px 15px rgba(0,0,0,0.2); */
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 150%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brand-text {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .brand-subtitle {
+            color: #FFF9C4;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        /* Menú de navegación */
+        nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 101;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            position: relative;
+            padding: 12px 24px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FF8F00;
+            min-width: 220px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            z-index: 200;
+            margin-top: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Contenido principal */
+        main {
+            max-width: 1400px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #FF6F00;
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Diseño de panal hexagonal mejorado */
+        .honeycomb-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 60px 0;
+            position: relative;
+        }
+
+        .honeycomb {
+            display: grid;
+            grid-template-columns: repeat(4, 120px);
+            gap: 8px;
+            position: relative;
+        }
+
+        .hex {
+            width: 120px;
+            height: 104px;
+            position: relative;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background: linear-gradient(135deg, #FFA726 0%, #FFB74D 50%, #FFC107 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            box-shadow: inset 0 0 20px rgba(255,152,0,0.3), 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .hex::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            height: 85%;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background: linear-gradient(135deg, #FFD54F, #FFECB3);
+            z-index: 1;
+        }
+
+        .hex-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #FF6F00;
+            font-weight: bold;
+            font-size: 13px;
+            padding: 10px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        }
+
+        .hex:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: inset 0 0 30px rgba(255,152,0,0.5), 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .hex:nth-child(2), .hex:nth-child(4) {
+            margin-top: 56px;
+        }
+
+        /* Efecto de miel goteando */
+        .honey-drip {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 30px;
+            background: linear-gradient(to bottom, transparent, #FFC107);
+            border-radius: 0 0 50% 50%;
+            animation: drip 3s ease-in-out infinite;
+        }
+
+        @keyframes drip {
+            0%, 100% { height: 30px; opacity: 1; }
+            50% { height: 45px; opacity: 0.7; }
+        }
+
+        .description {
+            text-align: center;
+            font-size: 18px;
+            color: #555;
+            line-height: 1.8;
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(255,193,7,0.1);
+            border-radius: 15px;
+            border-left: 5px solid #FFC107;
+        }
+
+        /* Footer */
+        footer {
+            background: #212121;
+            color: white;
+            padding: 60px 30px 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: #FFC107;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .contact-person {
+            background: rgba(255,193,7,0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid #FFC107;
+            transition: transform 0.3s;
+        }
+
+        .contact-person:hover {
+            transform: translateX(10px);
+            background: rgba(255,193,7,0.15);
+        }
+
+        .contact-person h4 {
+            color: #FFD54F;
+            margin-bottom: 5px;
+        }
+
+        .contact-person p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            background: #FFC107;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #212121;
+            text-decoration: none;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.2) rotate(360deg);
+            background: #FFD54F;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,193,7,0.3);
+            font-size: 14px;
+        }
+
+        .footer-bottom a {
+            color: #FFC107;
+            text-decoration: none;
+        }
+
+        .newsletter {
+            background: rgba(255,193,7,0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .newsletter input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .newsletter button {
+            width: 100%;
+            padding: 12px;
+            background: #FFC107;
+            border: none;
+            border-radius: 5px;
+            color: #212121;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .newsletter button:hover {
+            background: #FFD54F;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,193,7,0.5);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                gap: 8px;
+            }
+            
+            .nav-item {
+                font-size: 13px;
+                padding: 10px 15px;
+            }
+
+            .honeycomb {
+                grid-template-columns: repeat(2, 100px);
+            }
+
+            .hex {
+                width: 100px;
+                height: 87px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flores de fondo -->
+    <div class="flower" style="bottom: 10%; left: 5%;">🌸</div>
+    <div class="flower" style="bottom: 15%; left: 15%;">🌺</div>
+    <div class="flower" style="bottom: 8%; right: 10%;">🌼</div>
+    <div class="flower" style="bottom: 20%; right: 20%;">🌻</div>
+    <div class="flower" style="top: 60%; left: 8%;">🌷</div>
+    <div class="flower" style="top: 65%; right: 12%;">🌹</div>
+
+    <!-- Abejas animadas con alas batiendo -->
+    <div class="bee-container" style="animation-duration: 18s; animation-delay: 0s;">
+        <div class="bee-wings">
+            <div class="wing left"></div>
+            <div class="wing right"></div>
+        </div>
+        <div class="bee-body">🐝</div>
+    </div>
+
+    <div class="bee-container" style="animation-duration: 22s; animation-delay: 3s; top: 40%;">
+        <div class="bee-wings">
+            <div class="wing left"></div>
+            <div class="wing right"></div>
+        </div>
+        <div class="bee-body">🐝</div>
+    </div>
+
+    <div class="bee-container" style="animation-duration: 25s; animation-delay: 6s; top: 50%;">
+        <div class="bee-wings">
+            <div class="wing left"></div>
+            <div class="wing right"></div>
+        </div>
+        <div class="bee-body">🐝</div>
+    </div>
+
+    <div class="bee-container" style="animation-duration: 20s; animation-delay: 9s; top: 70%;">
+        <div class="bee-wings">
+            <div class="wing left"></div>
+            <div class="wing right"></div>
+        </div>
+        <div class="bee-body">🐝</div>
+    </div>
+
+    <div class="bee-container" style="animation-duration: 24s; animation-delay: 12s; top: 30%;">
+        <div class="bee-wings">
+            <div class="wing left"></div>
+            <div class="wing right"></div>
+        </div>
+        <div class="bee-body">🐝</div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <!-- COLOCA TU IMAGEN AQUÍ - Reemplaza 'URL_DE_TU_LOGO' con la ruta de tu imagen -->
+                <div class="logo">
+                    <img src="https://www.melimel.com.bo/wp-content/uploads/logo-meli_Mesa-de-trabajo-1.png" alt="Melimel Logo">
+                    <!-- Si no tienes la URL, usa este emoji temporalmente: -->
+                    <!-- <span style="font-size: 50px;">🍯</span> -->
+                </div>
+                <div>
+                    <div class="brand-text"></div>
+                    <div class="brand-subtitle"></div>
+                </div>
+            </div>
+            
+            <nav>
+                <a href="#inicio" class="nav-item">Inicio</a>
+                <a href="#teoria" class="nav-item">Marco Teórico</a>
+                
+                <div class="dropdown">
+                    <span class="nav-item">Análisis Estructural ▼</span>
+                    <div class="dropdown-content">
+                        <a href="#ambiental">Modelo Ambiental</a>
+                        <a href="#comportamiento">Modelo de comportamiento</a>
+                    </div>
+                </div>
+                
+                <a href="#objetos" class="nav-item">Orientado a Objetos</a>
+                <a href="#clases" class="nav-item">Diagrama de Clases</a>
+                <a href="#videos" class="nav-item">Videos</a>
+                <a href="#contacto" class="nav-item">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <h1>🐝 Bienvenidos a Melimel 🍯</h1>
+        
+        <!-- Diseño hexagonal tipo panal -->
+        <div class="honeycomb-container">
+            <div class="honeycomb">
+                <div class="hex">
+                    <div class="hex-content">Miel Pura de Abeja</div>
+                    <div class="honey-drip"></div>
+                </div>
+                <div class="hex">
+                    <div class="hex-content">Extractos Naturales</div>
+                </div>
+                <div class="hex">
+                    <div class="hex-content">Productos Orgánicos</div>
+                    <div class="honey-drip" style="animation-delay: 1s;"></div>
+                </div>
+                <div class="hex">
+                    <div class="hex-content">Calidad Premium</div>
+                </div>
+                <div class="hex">
+                    <div class="hex-content">100% Natural</div>
+                    <div class="honey-drip" style="animation-delay: 2s;"></div>
+                </div>
+                <div class="hex">
+                    <div class="hex-content">Salud y Vitalidad</div>
+                </div>
+                <div class="hex">
+                    <div class="hex-content">Innovación</div>
+                </div>
+                <div class="hex">
+                    <div class="hex-content">Ecológico</div>
+                    <div class="honey-drip" style="animation-delay: 1.5s;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="description">
+            <strong>🌿 Sobre Nosotros</strong><br><br>
+            Somos productores de miel de abejas y extractos de frutas y hierbas locales con miel. 
+            Nos enfocamos en desarrollar productos alimenticios ecológicos e innovadores que aporten 
+            salud y vitalidad a nuestros clientes. Cada producto es elaborado con amor y dedicación, 
+            respetando los procesos naturales de nuestras abejas y el medio ambiente.
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="footer-content">
+            <!-- Contactos -->
+            <div class="footer-section">
+                <h3>📞 Contáctanos</h3>
+                <p style="margin-bottom: 20px;">Si tienes alguna duda estamos a tus órdenes</p>
+                
+                <div class="contact-person">
+                    <h4>María González</h4>
+                    <p>📱 +591 73659001</p>
+                    <p>✉️ maria.gonzalez@melimel.com.bo</p>
+                    <p>🏢 Gerente de Ventas</p>
+                </div>
+                
+                <div class="contact-person">
+                    <h4>Carlos Pérez</h4>
+                    <p>📱 +591 73659002</p>
+                    <p>✉️ carlos.perez@melimel.com.bo</p>
+                    <p>🏢 Asesor Comercial</p>
+                </div>
+                
+                <div class="contact-person">
+                    <h4>Ana Rodríguez</h4>
+                    <p>📱 +591 73659003</p>
+                    <p>✉️ ana.rodriguez@melimel.com.bo</p>
+                    <p>🏢 Atención al Cliente</p>
+                </div>
+            </div>
+
+            <!-- Más contactos -->
+            <div class="footer-section">
+                <h3>👥 Más Contactos</h3>
+                
+                <div class="contact-person">
+                    <h4>Brayan Hemer Laura Mancilla</h4>
+                    <p>📱 +591 73659004</p>
+                    <p>✉️ luis.mamani@melimel.com.bo</p>
+                    <p>🏢 Producción</p>
+                </div>
+                
+                <div class="contact-person">
+                    <h4>Sofia Quispe</h4>
+                    <p>📱 +591 73659005</p>
+                    <p>✉️ sofia.quispe@melimel.com.bo</p>
+                    <p>🏢 Control de Calidad</p>
+                </div>
+                
+                <div class="contact-person">
+                    <h4>Roberto Flores</h4>
+                    <p>📱 +591 73659006</p>
+                    <p>✉️ roberto.flores@melimel.com.bo</p>
+                    <p>🏢 Logística y Distribución</p>
+                </div>
+
+                <p style="margin-top: 20px;">
+                    <strong>WhatsApp General:</strong> +591 73659004<br>
+                    <strong>Email General:</strong> contacto@melimel.com.bo
+                </p>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="footer-section">
+                <h3>📧 Suscríbete</h3>
+                <p style="margin-bottom: 15px;">Una vez por semana, contenido de calidad. Entérate de nuevos lanzamientos, eventos y más.</p>
+                
+                <div class="newsletter">
+                    <input type="email" placeholder="Correo electrónico*" required>
+                    <button>ENVIAR CORREO</button>
+                </div>
+
+                <h3 style="margin-top: 30px;">🌐 Síguenos</h3>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">📘</a>
+                    <a href="#" class="social-icon">📷</a>
+                    <a href="#" class="social-icon">💼</a>
+                    <a href="#" class="social-icon">🎵</a>
+                </div>
+
+                <p style="margin-top: 20px; font-size: 14px;">
+                    <strong>Vivir con gusto</strong> 🐝🍯
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © Copyright 2025 <a href="#">www.melimel.com.bo</a> - Todos los derechos reservados<br>
+            Diseñado con 💛 para los amantes de la miel natural
+        </div>
+    </footer>
+
+    <script>
+        // Scroll suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
