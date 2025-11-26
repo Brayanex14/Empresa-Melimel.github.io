@@ -97,7 +97,8 @@
         header {
             background: linear-gradient(to bottom, #FFC700);
             padding: 0;
-            position: relative;
+            position: sticky; /* Usa sticky o fixed para que el menú siempre esté visible */
+            top: 0;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             z-index: 100;
         }
@@ -119,7 +120,6 @@
             z-index: 101;
         }
 
-        /* AQUÍ VA TU LOGO - Reemplaza el src con la ruta de tu imagen */
         .logo {
             width: 190px;
             height: 140px;
@@ -128,7 +128,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* box-shadow: 0 4px 15px rgba(0,0,0,0.2); */
             overflow: hidden;
         }
 
@@ -175,7 +174,7 @@
             backdrop-filter: blur(10px);
         }
 
-        .nav-item:hover {
+        .nav-item:hover, .nav-item.active {
             background: rgba(255,255,255,0.4);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -212,7 +211,7 @@
             transition: background 0.3s;
         }
 
-        .dropdown-content a:hover {
+        .dropdown-content a:hover, .dropdown-content a.active {
             background: rgba(255,255,255,0.2);
         }
 
@@ -220,12 +219,32 @@
         main {
             max-width: 1400px;
             margin: 50px auto;
+            padding: 0 40px; /* Padding ajustado para main */
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Contenedor de todas las secciones para simular las 'páginas' */
+        .page-content-wrapper {
+            padding: 0;
+        }
+        
+        /* Estilos para las secciones, ahora actuando como "páginas" */
+        .content-section, #inicio {
+            display: none; /* Ocultar todas por defecto */
+            max-width: 100%; /* Para que ocupe el ancho del main */
+            margin: 0 auto 50px auto;
             padding: 40px;
             background: rgba(255,255,255,0.95);
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             position: relative;
-            z-index: 10;
+            border-left: 5px solid #FFC107;
+            scroll-margin-top: 100px;
+        }
+        
+        #inicio {
+            display: block; /* Mostrar la sección de inicio por defecto */
         }
 
         h1 {
@@ -236,7 +255,7 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Diseño de panal hexagonal mejorado */
+        /* Diseño de panal hexagonal mejorado (estilos existentes) */
         .honeycomb-container {
             display: flex;
             justify-content: center;
@@ -327,6 +346,35 @@
             background: rgba(255,193,7,0.1);
             border-radius: 15px;
             border-left: 5px solid #FFC107;
+        }
+
+        /* Estilos para las secciones de contenido (existentes) */
+        .content-section h2 {
+            color: #FF6F00;
+            font-size: 32px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #FFC107;
+        }
+
+        .section-content {
+            color: #555;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .section-content p {
+            margin: 15px 0;
+        }
+
+        .section-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .section-content ul li {
+            padding: 10px 0;
+            font-size: 15px;
         }
 
         /* Footer */
@@ -469,7 +517,6 @@
     </style>
 </head>
 <body>
-    <!-- Flores de fondo -->
     <div class="flower" style="bottom: 10%; left: 5%;">🌸</div>
     <div class="flower" style="bottom: 15%; left: 15%;">🌺</div>
     <div class="flower" style="bottom: 8%; right: 10%;">🌼</div>
@@ -477,7 +524,6 @@
     <div class="flower" style="top: 60%; left: 8%;">🌷</div>
     <div class="flower" style="top: 65%; right: 12%;">🌹</div>
 
-    <!-- Abejas animadas con alas batiendo -->
     <div class="bee-container" style="animation-duration: 18s; animation-delay: 0s;">
         <div class="bee-wings">
             <div class="wing left"></div>
@@ -518,15 +564,11 @@
         <div class="bee-body">🐝</div>
     </div>
 
-    <!-- Header -->
     <header>
         <div class="header-content">
             <div class="logo-container">
-                <!-- COLOCA TU IMAGEN AQUÍ - Reemplaza 'URL_DE_TU_LOGO' con la ruta de tu imagen -->
                 <div class="logo">
                     <img src="https://www.melimel.com.bo/wp-content/uploads/logo-meli_Mesa-de-trabajo-1.png" alt="Melimel Logo">
-                    <!-- Si no tienes la URL, usa este emoji temporalmente: -->
-                    <!-- <span style="font-size: 50px;">🍯</span> -->
                 </div>
                 <div>
                     <div class="brand-text"></div>
@@ -535,122 +577,268 @@
             </div>
             
             <nav>
-                <a href="#inicio" class="nav-item">Inicio</a>
-                <a href="#teoria" class="nav-item">Marco Teórico</a>
+                <a href="#inicio" class="nav-item" title="Ir a la página de inicio">Inicio</a>
                 
                 <div class="dropdown">
-                    <span class="nav-item">Análisis Estructural ▼</span>
+                    <span class="nav-item" title="Conoce la base teórica">Marco Teórico ▼</span>
                     <div class="dropdown-content">
-                        <a href="#ambiental">Modelo Ambiental</a>
-                        <a href="#comportamiento">Modelo de comportamiento</a>
+                        <a href="#introduccion" title="Marco: conceptos y alcance">Introducción</a>
+                        <a href="#antecedentes" title="Marco: historia y respaldo">Antecedentes</a>
+                        <a href="#planteamiento" title="Marco: el problema principal">Planteamiento del Problema</a>
+                        <a href="#arbol" title="Marco: causas y efectos">Árbol de Problemas</a>
+                        <a href="#formulacion" title="Marco: define el reto">Formulación del Problema</a>
+                        <a href="#proposito" title="Marco: objetivo principal estudio">Propósito del Estudio</a>
+                        <a href="#metodologia" title="Marco: proceso de trabajo">Metodología</a>
+                        <a href="#planificacion" title="Marco: etapas y cronograma">Planificación de Actividades</a>
                     </div>
                 </div>
                 
-                <a href="#objetos" class="nav-item">Orientado a Objetos</a>
-                <a href="#clases" class="nav-item">Diagrama de Clases</a>
-                <a href="#videos" class="nav-item">Videos</a>
-                <a href="#contacto" class="nav-item">Contacto</a>
+                <div class="dropdown">
+                    <span class="nav-item" title="Analiza el entorno">Análisis Estructural ▼</span>
+                    <div class="dropdown-content">
+                        <a href="#ambiental" title="Estructura: el entorno externo">Modelo Ambiental</a>
+                        <a href="#comportamiento" title="Estructura: clientes y mercado">Modelo de comportamiento</a>
+                    </div>
+                </div>
+                
+                <a href="#objetos" class="nav-item" title="Ver diseño de software">Orientado a Objetos</a>
+                <a href="#clases" class="nav-item" title="Ver el diseño de clases">Diagrama de Clases</a>
+                <a href="#videos" class="nav-item" title="Contenido multimedia e instructivo">Videos</a>
+                <a href="#contacto" class="nav-item" title="Información de contacto Melimel">Contacto</a>
             </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main>
-        <h1>🐝 Bienvenidos a Melimel 🍯</h1>
-        
-        <!-- Diseño hexagonal tipo panal -->
-        <div class="honeycomb-container">
-            <div class="honeycomb">
-                <div class="hex">
-                    <div class="hex-content">Miel Pura de Abeja</div>
-                    <div class="honey-drip"></div>
-                </div>
-                <div class="hex">
-                    <div class="hex-content">Extractos Naturales</div>
-                </div>
-                <div class="hex">
-                    <div class="hex-content">Productos Orgánicos</div>
-                    <div class="honey-drip" style="animation-delay: 1s;"></div>
-                </div>
-                <div class="hex">
-                    <div class="hex-content">Calidad Premium</div>
-                </div>
-                <div class="hex">
-                    <div class="hex-content">100% Natural</div>
-                    <div class="honey-drip" style="animation-delay: 2s;"></div>
-                </div>
-                <div class="hex">
-                    <div class="hex-content">Salud y Vitalidad</div>
-                </div>
-                <div class="hex">
-                    <div class="hex-content">Innovación</div>
-                </div>
-                <div class="hex">
-                    <div class="hex-content">Ecológico</div>
-                    <div class="honey-drip" style="animation-delay: 1.5s;"></div>
+    <main class="page-content-wrapper">
+        <section id="inicio" class="content-section">
+            <h1>🐝 Bienvenidos a Melimel 🍯</h1>
+            
+            <div class="honeycomb-container">
+                <div class="honeycomb">
+                    <div class="hex">
+                        <div class="hex-content">Miel Pura de Abeja</div>
+                        <div class="honey-drip"></div>
+                    </div>
+                    <div class="hex">
+                        <div class="hex-content">Extractos Naturales</div>
+                    </div>
+                    <div class="hex">
+                        <div class="hex-content">Productos Orgánicos</div>
+                        <div class="honey-drip" style="animation-delay: 1s;"></div>
+                    </div>
+                    <div class="hex">
+                        <div class="hex-content">Calidad Premium</div>
+                    </div>
+                    <div class="hex">
+                        <div class="hex-content">100% Natural</div>
+                        <div class="honey-drip" style="animation-delay: 2s;"></div>
+                    </div>
+                    <div class="hex">
+                        <div class="hex-content">Salud y Vitalidad</div>
+                    </div>
+                    <div class="hex">
+                        <div class="hex-content">Innovación</div>
+                    </div>
+                    <div class="hex">
+                        <div class="hex-content">Ecológico</div>
+                        <div class="honey-drip" style="animation-delay: 1.5s;"></div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="description">
-            <strong>🌿 Sobre Nosotros</strong><br><br>
-            Somos productores de miel de abejas y extractos de frutas y hierbas locales con miel. 
-            Nos enfocamos en desarrollar productos alimenticios ecológicos e innovadores que aporten 
-            salud y vitalidad a nuestros clientes. Cada producto es elaborado con amor y dedicación, 
-            respetando los procesos naturales de nuestras abejas y el medio ambiente.
-        </div>
+            <div class="description">
+                <strong>🌿 Sobre Nosotros</strong><br><br>
+                Somos productores de miel de abejas y extractos de frutas y hierbas locales con miel. 
+                Nos enfocamos en desarrollar productos alimenticios ecológicos e innovadores que aporten 
+                salud y vitalidad a nuestros clientes. Cada producto es elaborado con amor y dedicación, 
+                respetando los procesos naturales de nuestras abejas y el medio ambiente.
+            </div>
+        </section>
+
+        <section id="introduccion" class="content-section">
+            <h2>📖 Introducción</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido a la sección de Introducción del Marco Teórico de Melimel.</strong></p>
+                <p>En esta sección presentamos los fundamentos teóricos que sustentan nuestro proyecto de producción de miel orgánica y productos derivados. Exploramos la importancia de la apicultura sostenible y su impacto en la salud y el medio ambiente.</p>
+                <p>La miel de abeja es uno de los alimentos más antiguos conocidos por la humanidad, y en Melimel nos dedicamos a preservar las técnicas tradicionales mientras incorporamos innovaciones que garantizan la calidad y pureza de nuestros productos.</p>
+            </div>
+        </section>
+
+        <section id="antecedentes" class="content-section">
+            <h2>📚 Antecedentes</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido a la sección de Antecedentes.</strong></p>
+                <p>Aquí documentamos la historia y evolución de la producción de miel en nuestra región, así como las investigaciones previas que respaldan nuestros métodos de producción ecológica y las propiedades beneficiosas de nuestros productos naturales.</p>
+                <p>La apicultura en Bolivia tiene una rica tradición que se remonta a tiempos precolombinos. Nuestro compromiso es honrar esta herencia mientras desarrollamos prácticas sostenibles para las generaciones futuras.</p>
+            </div>
+        </section>
+
+        <section id="planteamiento" class="content-section">
+            <h2>🎯 Planteamiento del Problema</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido a la sección de Planteamiento del Problema.</strong></p>
+                <p>Identificamos la necesidad de productos alimenticios saludables y naturales en el mercado actual, así como los desafíos que enfrenta la apicultura tradicional. Nuestro enfoque busca ofrecer soluciones innovadoras que beneficien tanto a los consumidores como al ecosistema.</p>
+                <p>Los consumidores modernos buscan productos auténticos, libres de químicos y procesamiento industrial excesivo. Melimel responde a esta demanda con productos 100% naturales.</p>
+            </div>
+        </section>
+
+        <section id="arbol" class="content-section">
+            <h2>🌳 Árbol de Problemas</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido a la sección de Árbol de Problemas.</strong></p>
+                <p>Presentamos un análisis estructurado de las causas y efectos relacionados con la producción y comercialización de miel orgánica, identificando oportunidades de mejora y áreas de desarrollo para nuestro proyecto.</p>
+                <p>Este análisis nos permite comprender mejor los desafíos del sector y diseñar estrategias efectivas para superarlos.</p>
+            </div>
+        </section>
+
+        <section id="formulacion" class="content-section">
+            <h2>❓ Formulación del Problema</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido a la sección de Formulación del Problema.</strong></p>
+                <p>Definimos de manera precisa los desafíos que buscamos resolver: ¿Cómo podemos ofrecer productos de miel de alta calidad que sean accesibles, sostenibles y beneficiosos para la salud de nuestros clientes?</p>
+                <p>Esta pregunta guía todas nuestras decisiones de producción, comercialización y desarrollo de productos.</p>
+            </div>
+        </section>
+
+        <section id="proposito" class="content-section">
+            <h2>🎓 Propósito del Estudio</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido a la sección de Propósito del Estudio.</strong></p>
+                <p>Nuestro objetivo es desarrollar un modelo de negocio sostenible que promueva la apicultura responsable, genere productos de calidad premium y contribuya al bienestar de nuestra comunidad y el medio ambiente.</p>
+                <p>Buscamos ser líderes en la producción de miel orgánica en Bolivia, estableciendo estándares de calidad y sostenibilidad para toda la industria.</p>
+            </div>
+        </section>
+
+        <section id="metodologia" class="content-section">
+            <h2>🔬 Metodología</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido a la sección de Metodología.</strong></p>
+                <p>Describimos los métodos y procesos que empleamos en la producción de nuestra miel y extractos naturales, desde la recolección cuidadosa hasta el envasado final, garantizando siempre los más altos estándares de calidad.</p>
+                <p>Nuestra metodología combina técnicas tradicionales de apicultura con controles de calidad modernos, asegurando que cada producto mantenga todas sus propiedades naturales y beneficios para la salud.</p>
+            </div>
+        </section>
+
+        <section id="planificacion" class="content-section">
+            <h2>📅 Planificación de Actividades</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido a la sección de Planificación de Actividades.</strong></p>
+                <p>Presentamos el cronograma y las etapas de desarrollo de nuestro proyecto, incluyendo la producción, control de calidad, distribución y estrategias de comercialización de nuestros productos.</p>
+                <p>Cada fase está cuidadosamente planificada para garantizar la máxima eficiencia y calidad en todos nuestros procesos.</p>
+            </div>
+        </section>
+
+        <section id="ambiental" class="content-section">
+            <h2>🌍 Modelo Ambiental</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido al Modelo Ambiental.</strong></p>
+                <p>Analizamos el entorno externo e interno que afecta a Melimel, identificando factores ambientales, económicos, sociales y tecnológicos que influyen en nuestra operación y desarrollo sostenible.</p>
+                <p>Este análisis nos permite adaptarnos proactivamente a los cambios del mercado y del entorno, manteniendo siempre nuestro compromiso con la sostenibilidad.</p>
+            </div>
+        </section>
+
+        <section id="comportamiento" class="content-section">
+            <h2>📊 Modelo de Comportamiento</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido al Modelo de Comportamiento.</strong></p>
+                <p>Estudiamos los patrones de comportamiento de nuestros clientes, proveedores y stakeholders para optimizar nuestros procesos de producción, distribución y atención al cliente.</p>
+                <p>Comprender a nuestros clientes nos permite ofrecer exactamente lo que necesitan, cuando lo necesitan.</p>
+            </div>
+        </section>
+
+        <section id="objetos" class="content-section">
+            <h2>💻 Orientado a Objetos</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido a la sección de Orientado a Objetos.</strong></p>
+                <p>En esta sección presentamos el diseño de nuestro sistema de gestión utilizando programación orientada a objetos, identificando las entidades principales como Productos, Clientes, Pedidos, Inventario y sus relaciones.</p>
+                <p>Este enfoque nos permite gestionar eficientemente todas las operaciones de Melimel de manera organizada y escalable.</p>
+            </div>
+        </section>
+
+        <section id="clases" class="content-section">
+            <h2>📐 Diagrama de Clases</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido a la sección de Diagrama de Clases.</strong></p>
+                <p>Visualizamos la estructura de clases de nuestro sistema, mostrando las relaciones entre las diferentes entidades y cómo interactúan para gestionar eficientemente las operaciones de Melimel.</p>
+                <p>El diagrama incluye clases como: Producto, Cliente, Pedido, Inventario, Proveedor, y sus métodos y atributos correspondientes.</p>
+            </div>
+        </section>
+
+        <section id="videos" class="content-section">
+            <h2>🎥 Videos Tutoriales</h2>
+            <div class="section-content">
+                <p><strong>Bienvenido a la sección de Videos.</strong></p>
+                <h3 style="color: #FF6F00; margin-top: 20px;">Tutorial: Cómo Navegar en Nuestra Página Web</h3>
+                <p><strong>En este video aprenderás:</strong></p>
+                <ul style="text-align: left; margin: 20px auto; max-width: 600px;">
+                    <li>✓ Cómo navegar por las diferentes secciones del sitio</li>
+                    <li>✓ Acceder al menú desplegable de Marco Teórico</li>
+                    <li>✓ Explorar nuestros productos y servicios</li>
+                    <li>✓ Contactar con nuestro equipo</li>
+                    <li>✓ Suscribirte a nuestro newsletter</li>
+                    <li>✓ Conocer sobre análisis estructural y orientado a objetos</li>
+                    <li>✓ Visualizar diagramas de clases</li>
+                </ul>
+                <div style="margin-top: 30px; padding: 20px; background: rgba(255,193,7,0.1); border-radius: 10px;">
+                    <p style="margin-bottom: 15px;"><strong>Duración:</strong> 5 minutos | <strong>Nivel:</strong> Principiante</p>
+                    <p style="font-style: italic; color: #666;">El video se mostrará aquí próximamente. Estamos preparando contenido de alta calidad para ayudarte a aprovechar al máximo nuestra plataforma.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contacto_top" class="content-section" style="border-left: 0; box-shadow: none; background: transparent; padding-bottom: 0;">
+            <h2 style="text-align: center;">Información de Contacto</h2>
+            <p style="text-align: center; color: #555; margin-bottom: 20px;">Desplácese al final de la página para ver todos los detalles de contacto, o envíenos un correo electrónico a contacto@melimel.com.bo.</p>
+        </section>
+        
     </main>
 
-    <!-- Footer -->
     <footer id="contacto">
         <div class="footer-content">
-            <!-- Contactos -->
             <div class="footer-section">
                 <h3>📞 Contáctanos</h3>
                 <p style="margin-bottom: 20px;">Si tienes alguna duda estamos a tus órdenes</p>
                 
                 <div class="contact-person">
-                    <h4>Gary Ariel Arteaga Gabriel</h4>
+                    <h4>María González</h4>
                     <p>📱 +591 73659001</p>
                     <p>✉️ maria.gonzalez@melimel.com.bo</p>
                     <p>🏢 Gerente de Ventas</p>
                 </div>
                 
                 <div class="contact-person">
-                    <h4>Kevin Jairo Terrazas Bautista</h4>
+                    <h4>Carlos Pérez</h4>
                     <p>📱 +591 73659002</p>
                     <p>✉️ carlos.perez@melimel.com.bo</p>
                     <p>🏢 Asesor Comercial</p>
                 </div>
                 
                 <div class="contact-person">
-                    <h4>Eddy Gonzalo Ortiz Machicado</h4>
+                    <h4>Ana Rodríguez</h4>
                     <p>📱 +591 73659003</p>
                     <p>✉️ ana.rodriguez@melimel.com.bo</p>
                     <p>🏢 Atención al Cliente</p>
                 </div>
             </div>
 
-            <!-- Más contactos -->
             <div class="footer-section">
                 <h3>👥 Más Contactos</h3>
                 
                 <div class="contact-person">
-                    <h4>Brayan Hemer Laura Mancilla</h4>
+                    <h4>Luis Mamani</h4>
                     <p>📱 +591 73659004</p>
                     <p>✉️ luis.mamani@melimel.com.bo</p>
                     <p>🏢 Producción</p>
                 </div>
                 
                 <div class="contact-person">
-                    <h4>Erick Ichuta Chiqumia</h4>
+                    <h4>Sofia Quispe</h4>
                     <p>📱 +591 73659005</p>
                     <p>✉️ sofia.quispe@melimel.com.bo</p>
                     <p>🏢 Control de Calidad</p>
                 </div>
                 
                 <div class="contact-person">
-                    <h4>Kevin Gary Villanueva Chiqumia</h4>
+                    <h4>Roberto Flores</h4>
                     <p>📱 +591 73659006</p>
                     <p>✉️ roberto.flores@melimel.com.bo</p>
                     <p>🏢 Logística y Distribución</p>
@@ -662,7 +850,6 @@
                 </p>
             </div>
 
-            <!-- Newsletter -->
             <div class="footer-section">
                 <h3>📧 Suscríbete</h3>
                 <p style="margin-bottom: 15px;">Una vez por semana, contenido de calidad. Entérate de nuevos lanzamientos, eventos y más.</p>
@@ -693,15 +880,90 @@
     </footer>
 
     <script>
-        // Scroll suave
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.addEventListener('DOMContentLoaded', () => {
+            const allSections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('nav a');
+            // Eliminamos la referencia a mainContent ya que no haremos scroll automático
+            
+            // Función para ocultar todas las secciones y mostrar solo la seleccionada
+            function showPage(targetId) {
+                // Ocultar todas las secciones
+                allSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // Mostrar la sección objetivo
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                    // *** CAMBIO CLAVE: Se eliminó la línea `mainContent.scrollIntoView(...)` ***
+                    // Esto evita el desplazamiento automático y mantiene la posición del usuario.
                 }
+
+                // Manejo de la clase 'active' para resaltado en el menú
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                // Resaltar el enlace activo. Si es un enlace directo o dentro de un dropdown.
+                const activeLink = document.querySelector(`nav a[href="${targetId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                    // Si el enlace está dentro de un dropdown, resaltar también el contenedor del dropdown
+                    const dropdownSpan = activeLink.closest('.dropdown');
+                    if(dropdownSpan) {
+                         const navItemSpan = dropdownSpan.querySelector('.nav-item');
+                         if(navItemSpan) {
+                            // Quitamos la clase 'active' del SPAN para no interferir si el usuario navegó por un link directo
+                            document.querySelectorAll('nav .dropdown > .nav-item').forEach(span => span.classList.remove('active'));
+                            // Agregamos la clase 'active' al SPAN que contiene el link clickeado
+                            navItemSpan.classList.add('active');
+                         }
+                    }
+                }
+                
+                // Limpiamos la clase 'active' en todos los SPAN si se navega a una opción fuera del dropdown
+                if (!activeLink || !activeLink.closest('.dropdown')) {
+                    document.querySelectorAll('nav .dropdown > .nav-item').forEach(span => span.classList.remove('active'));
+                }
+            }
+
+            // Manejador de clics para todos los enlaces del menú
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    let targetId = this.getAttribute('href');
+                    
+                    // Si el target es #contacto, cambiamos el ID para simular una página que va a la sección de Contacto
+                    if (targetId === '#contacto') {
+                        // Usamos una sección auxiliar visible al comienzo
+                        targetId = '#contacto_top'; 
+                        showPage(targetId);
+                        // Hacemos scroll directo al footer (contacto) si el usuario hace clic en CONTACTO
+                        document.querySelector('#contacto').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        showPage(targetId);
+                    }
+                });
             });
+
+            // Lógica para manejar el clic en el SPAN del dropdown
+            document.querySelectorAll('nav .dropdown > .nav-item').forEach(dropdownSpan => {
+                 dropdownSpan.addEventListener('click', function(e) {
+                    // Evita que el click en el span active una navegación de página principal (solo abre el dropdown)
+                    e.stopPropagation();
+                 });
+            });
+
+            // Lógica para cargar la página correcta al inicio si hay un hash en la URL
+            const initialHash = window.location.hash || '#inicio';
+            if (initialHash === '#contacto') {
+                // Caso especial para contacto para mostrar la sección auxiliar y hacer scroll
+                showPage('#contacto_top');
+                document.querySelector('#contacto').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                showPage(initialHash);
+            }
         });
     </script>
 </body>
